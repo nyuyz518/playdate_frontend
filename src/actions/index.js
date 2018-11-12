@@ -1,0 +1,35 @@
+import axios from 'axios';
+
+export const FETCH_EVENTS = 'fetch_events';
+export const FETCH_EVENT = 'fetch_event';
+export const CREATE_EVENT = 'create_event';
+
+const ROOT_URL = 'http://localhost:3000/api/v1';
+const API_KEY = '?key=papertiger1234';
+
+export function fetchEvents(){
+  const request = axios.get(`${ROOT_URL}/events`);
+  return{
+    type: FETCH_EVENTS,
+    payload: request
+  };
+}
+
+
+export function createEvent(values, callback){
+  const request = axios.post(`${ROOT_URL}/events`, values)
+    .then(()=>callback());
+
+  return{
+    type: CREATE_EVENT,
+    payload: request
+  };
+}
+
+export function fetchEvent(id){
+  const request = axios.get(`${ROOT_URL}/events/${id}`);
+  return{
+    type: FETCH_EVENT,
+    payload: request
+  };
+}
