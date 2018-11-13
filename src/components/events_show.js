@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchEvent } from '../actions';
+import { fetchEvent, deleteEvent } from '../actions';
 
 class EventsShow extends Component {
   componentDidMount(){
@@ -9,8 +9,15 @@ class EventsShow extends Component {
     this.props.fetchEvent(id);
   }
 
+  onDeleteClick(){
+    const {id} = this.props.match.params;
+    this.props.deleteEvent(id, () => {
+      this.props.history.push("/")
+    });
+  }
+
   render(){
-    const { event } = this.props
+    const { event }  = this.props;
 
     if(!event){
       return(
@@ -26,7 +33,9 @@ class EventsShow extends Component {
         <h5>Location: {event.location}</h5>
         <p>Description of the playdate: {event.description}</p>
         <button className="btn btn-primary pull-xs-left">Edit </button>
-        <button className="btn btn-danger pull-xs-center">Delete </button>
+        <button className="btn btn-danger pull-xs-center"
+          onClick={this.onDeleteClick.bind(this)}>
+        Delete </button>
       </div>
     );
   }
@@ -36,4 +45,4 @@ function mapStateToProps({ events },ownProps) {
   return {event: events[ownProps.match.params.id]}
 }
 
-export default connect(mapStateToProps,{fetchEvent})(EventsShow);
+export default connect(mapStateToProps,{fetchEvent, deleteEvent})(EventsShow);
