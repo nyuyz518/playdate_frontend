@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import GoogleMap from './google_map.js';
 import { connect } from 'react-redux';
 import { fetchEvent, deleteEvent } from '../actions';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 class EventsShow extends Component {
 
@@ -30,26 +30,39 @@ class EventsShow extends Component {
     return (
       <div>
         <p>Picture: {event.img}</p>
+        <h6>Time:{event.time}</h6>
+        <p>Description: {event.description}</p>
         <p>Map View </p>
-        <GoogleMap lat='-25.344' lon='131.036'/>
+        <Map
+          class='google-map'
+          style={{width: '600px', height: '400px', position: 'relative'}}
+          containerStyle={{width: '600px', height: '400px', position: 'relative'}}
+          google={this.props.google}
+          initialCenter={event.location}
+          zoom={14} >
 
-          <h6>Time:{event.time}</h6>
-          <h6>Location: {event.location}</h6>
-          <p>Description: {event.description}</p>
+          <Marker position={event.location}
+                  title={event.description} />
+        </Map>
 
-          <button className="btn btn-primary pull-xs-left">Edit </button>
-          <button
+        <button className="btn btn-primary pull-xs-left">Edit </button>
+        <button
             className="btn btn-danger pull-xs-center"
             onClick={this.onDeleteClick.bind(this)}>
-            Delete </button>
-          <Link className="btn btn-primary" to="/"> Back to All Playdates</Link>
+            Delete
+        </button>
+        <Link className="btn btn-primary" to="/"> Back to All Playdates</Link>
       </div>
     );
   }
 }
 
 function mapStateToProps({ events },ownProps) {
-  return {event: events[ownProps.match.params.id]}
+  return {event: events[ownProps.match.params.id]};
 }
 
-export default connect(mapStateToProps,{fetchEvent, deleteEvent})(EventsShow);
+const connectedView = connect(mapStateToProps,{fetchEvent, deleteEvent})(EventsShow);
+
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyDXOD5OgIcQwYhrFoWZ4Sf7KS72JXhKe88'
+})(connectedView)

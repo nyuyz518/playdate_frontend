@@ -16,7 +16,7 @@ class EventsIndex extends Component {
       return (
         <li className="list-group-item" key={event.id}>
           <Link to={`/events/${event.id}`}>
-            {event.location}
+            {event.description}
           </Link>
         </li>
       );

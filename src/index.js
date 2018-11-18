@@ -14,6 +14,8 @@ import SearchBar from './components/events_search';
 import EventsNew from './components/events_new';
 import EventsShow from './components/events_show';
 
+import MapView from './components/map_view';
+
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
@@ -23,6 +25,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/events/new" component={EventsNew} />
           <Route path="/events/:id" component={EventsShow} />
+          <Route path="/map" component={MapView} />
           <Route path="/" component={EventsIndex} />
           <Route path="/" component={SearchBar} />
         </Switch>
