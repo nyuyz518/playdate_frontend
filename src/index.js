@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
-//import 'semantic-ui-css/semantic.min.css'
 import promise from 'redux-promise';
 import reducers from './reducers';
-//import EventsContainer from '../containers/events_container.js'
-//import GoogleMapsContainer from '../containers/map_container.js'
 import EventsIndex from './components/events_index';
 import SearchBar from './components/events_search';
 
@@ -32,4 +29,4 @@ ReactDOM.render(
       </div>
     </BrowserRouter>
   </Provider>
-  , document.querySelector('.container'));
+  , document.querySelector('.root'));

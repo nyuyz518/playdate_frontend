@@ -3,10 +3,12 @@ import { Field, reduxForm} from 'redux-form';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { createEvent } from '../actions';
+import { ACInput } from './autocomplete_input.js'
+import { GoogleApiWrapper } from 'google-maps-react';
 
 class EventsNew extends Component {
 
-  renderField(field){
+  renderTextField(field){
     return(
       <div className="form-group">
         <label>{field.label}</label>
@@ -37,22 +39,23 @@ class EventsNew extends Component {
           <Field
             label="Time"
             name="time"
-            component={this.renderField}
+            component={this.renderTextField}
             />
           <Field
             label="Location"
             name="location"
-            component={this.renderField}
+            google={this.props.google}
+            component={ACInput}
           />
           <Field
-          label="Description"
-          name="description"
-          component={this.renderField}
+            label="Description"
+            name="description"
+            component={this.renderTextField}
           />
           <Field
             label="Upload A Picture"
             name="image"
-            component={this.renderField}
+            component={this.renderTextField}
           />
           <button type="submit" className="btn btn-primary">Submit</button>
           <Link className="btn btn-danger" to="/">Cancel</Link>
@@ -68,7 +71,7 @@ function validate(values){
     error.time = "Pick a time";
   }
   if (!values.location){
-    error.location = "Enter a location";
+    error.location = "Enter aa location";
   }
   if (!values.description || values.description.length < 6){
     error.description = "Describe a bit about your playdate";
@@ -77,9 +80,13 @@ function validate(values){
   return error;
 }
 
-export default reduxForm({
+EventsNew = connect(null,{createEvent})(EventsNew)
+
+EventsNew = reduxForm({
     validate,
     form:'newEventForm'
-  })(
-    connect(null,{createEvent})(EventsNew)
-  )
+  })(EventsNew)
+
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+})(EventsNew)

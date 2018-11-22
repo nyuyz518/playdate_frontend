@@ -64,5 +64,5 @@ function mapStateToProps({ events },ownProps) {
 const connectedView = connect(mapStateToProps,{fetchEvent, deleteEvent})(EventsShow);
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyDXOD5OgIcQwYhrFoWZ4Sf7KS72JXhKe88'
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(connectedView)
