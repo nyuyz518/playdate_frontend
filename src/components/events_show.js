@@ -18,8 +18,9 @@ class EventsShow extends Component {
     });
   }
 
+
   render(){
-    const { event } = this.props
+    const { event } = this.props;
 
     if(!event){
       return(
@@ -30,27 +31,37 @@ class EventsShow extends Component {
     return (
       <div>
         <p>Picture: {event.img}</p>
-        <h6>Time:{event.time}</h6>
+        <p>Time:{event.time}</p>
         <p>Description: {event.description}</p>
+        <p>Address: {event.location.address}</p>
+
         <p>Map View </p>
         <Map
           class='google-map'
           style={{width: '600px', height: '400px', position: 'relative'}}
           containerStyle={{width: '600px', height: '400px', position: 'relative'}}
           google={this.props.google}
-          initialCenter={event.location}
+          initialCenter={event.location.coordinates}
           zoom={14} >
 
-          <Marker position={event.location}
+          <Marker position={event.location.coordinates}
                   title={event.description} />
         </Map>
+        <br/>
 
-        <button className="btn btn-primary pull-xs-left">Edit </button>
+        <Link
+          className="btn btn-primary pull-xs-left"
+          to={`new/${event.id}`}
+          >
+          Edit
+        </Link>
+
         <button
-            className="btn btn-danger pull-xs-center"
-            onClick={this.onDeleteClick.bind(this)}>
-            Delete
+          className="btn btn-danger pull-xs-center"
+          onClick={this.onDeleteClick.bind(this)}>
+          Delete
         </button>
+
         <Link className="btn btn-primary" to="/"> Back to All Playdates</Link>
       </div>
     );

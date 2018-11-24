@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 import { Field, reduxForm} from 'redux-form';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { createEvent } from '../actions';
+import { createEvent, fetchEvent, updateEvent } from '../actions';
 import { ACInput } from './autocomplete_input.js'
 import { GoogleApiWrapper } from 'google-maps-react';
 
 class EventsNew extends Component {
+
+  componentDidMount(){
+    const {id} = this.props.match.params;
+    if(id){
+      this.props.fetchEvent(id);
+    }
+  }
 
   renderTextField(field){
     return(
@@ -80,11 +87,16 @@ function validate(values){
   return error;
 }
 
-EventsNew = connect(null,{createEvent})(EventsNew)
+function mapStateToProps({ events },ownProps) {
+  return {initialValues: events[ownProps.match.params.id]};
+}
+
+EventsNew = connect(mapStateToProps,{fetchEvent, createEvent, updateEvent})(EventsNew)
 
 EventsNew = reduxForm({
     validate,
-    form:'newEventForm'
+    form:'newEventForm',
+    enableReinitialize : true
   })(EventsNew)
 
 export default GoogleApiWrapper({

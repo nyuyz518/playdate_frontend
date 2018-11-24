@@ -4,6 +4,7 @@ export const FETCH_EVENTS = 'fetch_events';
 export const FETCH_EVENT = 'fetch_event';
 export const CREATE_EVENT = 'create_event';
 export const DELETE_EVENT = 'delete_event';
+export const UPDATE_EVENT = 'update_event';
 
 const ROOT_URL = 'http://localhost:3000/api/v1';
 
@@ -39,5 +40,13 @@ export function deleteEvent(id, callback){
   return {
     type: DELETE_EVENT,
     payload: id
+  };
+}
+
+export function updateEvent(id){
+  const request = axios.patch(`${ROOT_URL}/events/${id}`);
+  return{
+    type: UPDATE_EVENT,
+    payload: request
   };
 }

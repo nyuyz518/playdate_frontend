@@ -18,8 +18,11 @@ export class ACInput extends Component {
         return;
       }
       onChange({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
+        coordinates: {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        },
+        address: place.formatted_address
       });
     });
   }
