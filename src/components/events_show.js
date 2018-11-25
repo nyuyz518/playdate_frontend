@@ -42,6 +42,7 @@ class EventsShow extends Component {
           containerStyle={{width: '600px', height: '400px', position: 'relative'}}
           google={this.props.google}
           initialCenter={event.location.coordinates}
+          center={event.location.coordinates}
           zoom={14} >
 
           <Marker position={event.location.coordinates}

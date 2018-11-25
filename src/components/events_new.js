@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { createEvent, fetchEvent, updateEvent } from '../actions';
 import { ACInput } from './autocomplete_input.js'
 import { GoogleApiWrapper } from 'google-maps-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class EventsNew extends Component {
 
@@ -31,11 +33,33 @@ class EventsNew extends Component {
     );
   }
 
+  renderDatePicker({input, placeholder, defaultValue, meta: {touched, error} }) {
+    return (
+      <div>
+            <DatePicker
+               selected={input.value}
+               onChange={(date)=>{
+                 return input.onChange(date);
+               }}
+               showTimeSelect
+               timeFormat="HH:mm"
+               timeIntervals={60}
+               dateFormat="MM/d, yyyy h:mm aa"
+               timeCaption="time"
+            />
+            <div className="text-help red">
+              {touched ? error : " "}
+            </div>
+      </div>
+    );
+  }
+
+
   onSubmit(values){
     const { id } = this.props.match.params;
     if(id){
-      this.props.updateEvent(values, ()=> {
-        this.props.history.push("/");
+      this.props.updateEvent(id, values, ()=> {
+        this.props.history.push(`/events/${id}`);
       });
     } else {
       this.props.createEvent(values, ()=> {
@@ -53,8 +77,10 @@ class EventsNew extends Component {
           <Field
             label="Time"
             name="time"
-            component={this.renderTextField}
+            component={this.renderDatePicker}
             />
+          
+
           <Field
             label="Location"
             name="location"
@@ -90,7 +116,6 @@ function validate(values){
   if (!values.description || values.description.length < 6){
     error.description = "Describe a bit about your playdate";
   }
-
   return error;
 }
 

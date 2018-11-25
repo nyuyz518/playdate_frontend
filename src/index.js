@@ -11,6 +11,7 @@ import EventsNew from './components/events_new';
 import EventsShow from './components/events_show';
 
 import MapView from './components/map_view';
+import DateTest from './components/date_test';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -23,6 +24,7 @@ ReactDOM.render(
           <Route path="/events/update/:id" key="event_update" component={EventsNew} />
           <Route path="/events/:id" component={EventsShow} />
           <Route path="/map" component={MapView} />
+          <Route path="/time" component={DateTest} />
           <Route path="/" component={EventsIndex} />
           <Route path="/" component={SearchBar} />
         </Switch>

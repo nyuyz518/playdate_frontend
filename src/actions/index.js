@@ -43,8 +43,9 @@ export function deleteEvent(id, callback){
   };
 }
 
-export function updateEvent(id){
-  const request = axios.patch(`${ROOT_URL}/events/${id}`);
+export function updateEvent(id, values, callback){
+  const request = axios.patch(`${ROOT_URL}/events/${id}`, values)
+    .then(()=>callback());;
   return{
     type: UPDATE_EVENT,
     payload: request
