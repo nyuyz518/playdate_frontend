@@ -51,7 +51,7 @@ class EventsShow extends Component {
 
         <Link
           className="btn btn-primary pull-xs-left"
-          to={`new/${event.id}`}
+          to={`update/${event.id}`}
           >
           Edit
         </Link>

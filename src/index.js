@@ -19,7 +19,8 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Switch>
-          <Route path="/events/new/:id" component={EventsNew} />
+          <Route path="/events/new" key="event_new" component={EventsNew} />
+          <Route path="/events/update/:id" key="event_update" component={EventsNew} />
           <Route path="/events/:id" component={EventsShow} />
           <Route path="/map" component={MapView} />
           <Route path="/" component={EventsIndex} />

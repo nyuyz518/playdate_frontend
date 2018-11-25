@@ -28,12 +28,17 @@ export class ACInput extends Component {
   }
 
   render(){
+    let address = "";
+    if(this.props.input.value){
+      address = this.props.input.value.address;
+    }
     return (
       <div className="form-group">
         <label>{this.props.label}</label>
           <input
             className="form-control"
             type="text"
+            defaultValue={address}
             ref={this.pacInput}
           />
           <div className="text-help red">
@@ -44,4 +49,6 @@ export class ACInput extends Component {
   }
 }
 
-export default ACInput
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+})(ACInput);

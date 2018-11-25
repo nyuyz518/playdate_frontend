@@ -32,9 +32,16 @@ class EventsNew extends Component {
   }
 
   onSubmit(values){
-    this.props.createEvent(values, ()=> {
-      this.props.history.push("/")
-    });
+    const { id } = this.props.match.params;
+    if(id){
+      this.props.updateEvent(values, ()=> {
+        this.props.history.push("/");
+      });
+    } else {
+      this.props.createEvent(values, ()=> {
+        this.props.history.push("/");
+      });
+    }
   }
 
   render(){
@@ -87,18 +94,20 @@ function validate(values){
   return error;
 }
 
-function mapStateToProps({ events },ownProps) {
-  return {initialValues: events[ownProps.match.params.id]};
+let WrappedEventsNew = GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+})(EventsNew);
+
+function mapStateToProps({ events }, ownProps) {
+  return { initialValues: events[ownProps.match.params.id]};
 }
 
-EventsNew = connect(mapStateToProps,{fetchEvent, createEvent, updateEvent})(EventsNew)
-
-EventsNew = reduxForm({
+WrappedEventsNew = reduxForm({
     validate,
     form:'newEventForm',
     enableReinitialize : true
-  })(EventsNew)
+  })(WrappedEventsNew);
 
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
-})(EventsNew)
+WrappedEventsNew = connect(mapStateToProps, {fetchEvent, createEvent, updateEvent})(WrappedEventsNew);
+
+export default WrappedEventsNew;
