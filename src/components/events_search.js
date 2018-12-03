@@ -1,50 +1,75 @@
 import React, { Component } from 'react'
+import { Field, reduxForm} from 'redux-form';
+import { searchEvents } from '../actions';
+import { connect } from 'react-redux';
+import { ACInput } from './autocomplete_input.js'
+import { GoogleApiWrapper } from 'google-maps-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const SearchBar = props => {
+class SearchForm extends Component {
 
-  return(
-    <div>
-    <form style={{margin:30}}>
-    <input
-    type="text"
-    className = "input"
-    style={{height: 29, width: 300}}
-    placeholder=" Search a playdate"
-    />
-    <button
-    onClick={props.handleClick}
-    value={props.searchForm} > 🔍 </button>
-    </form>
-    </div>
-  )
+  renderDatePicker({input, placeholder, defaultValue, meta: {touched, error} }) {
+    return (
+        <div>
+            <DatePicker
+               selected={input.value.date}
+               onChange={(date)=>{
+                 return input.onChange({date: date});
+               }}
+               showTimeSelect
+               timeFormat="HH:mm"
+               timeIntervals={60}
+               dateFormat="MM/d, yyyy h:mm aa"
+               timeCaption="time"
+            />
+            <div className="text-help red">
+              {touched ? error : " "}
+            </div>
+        </div>
+    );
+  }
+
+  handleFormSubmit(values){
+    this.props.searchEvents({time: values.search_time.date});
+  }
+
+  render(){
+    const { handleSubmit } = this.props;
+    return (
+      <div>
+        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+          <p>Search by Time</p>
+          <Field
+            label="search_time"
+            name="search_time"
+            placeholder="Search by Time"
+            component={this.renderDatePicker}
+          />
+          <button type="submit" className="btn btn-primary"> Search </button>
+        </form>
+      </div>
+    )
+  }
 }
 
-export default SearchBar
-// import React, {Component} from 'react';
-// import {connect} from 'react-redux';
-// import {bindActionCreators} from 'redux';
-// import {search} from '../actions/search.js';
-//
-// class SearchBar extends Component {
-//   render() {
-//     const {search, value} = this.props;
-//
-//     return (
-//         <input
-//           className="form-control"
-//           placeholder = "Search a playdate"
-//           onChange={(e) => search(e.target.value)}
-//           value={value} />
-//     );
-//   }
-// }
-//
-// function mapStateToProps({description}) {
-//   return {value: description.value};
-// }
-//
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({search}, dispatch);
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+function validate(values){
+  const error = {};
+  if(!values.search_time){
+    error.search_time = "Pick a time";
+  }
+  return error;
+}
+
+let WrappedEventSearch = GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+})(SearchForm);
+
+WrappedEventSearch = reduxForm({
+    validate,
+    form:'searchEventForm'
+  })(WrappedEventSearch);
+
+  WrappedEventSearch = connect(null, {searchEvents})(WrappedEventSearch);
+
+export default WrappedEventSearch

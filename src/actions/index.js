@@ -5,6 +5,7 @@ export const FETCH_EVENT = 'fetch_event';
 export const CREATE_EVENT = 'create_event';
 export const DELETE_EVENT = 'delete_event';
 export const UPDATE_EVENT = 'update_event';
+export const SEARCH_EVENTS = 'search_events';
 
 const ROOT_URL = 'http://localhost:3000/api/v1';
 
@@ -16,10 +17,17 @@ export function fetchEvents(){
   };
 }
 
+export function searchEvents(values){
+  const request = axios.get(`${ROOT_URL}/events/search`, {params:values});
+  return{
+    type: SEARCH_EVENTS,
+    payload: request
+  };
+}
+
 export function createEvent(values, callback){
   const request = axios.post(`${ROOT_URL}/events`, values)
     .then(()=>callback());
-
   return{
     type: CREATE_EVENT,
     payload: request

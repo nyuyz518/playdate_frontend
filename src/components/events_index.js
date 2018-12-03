@@ -2,11 +2,13 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { fetchEvents } from '../actions';
-import SearchBar from './events_search';
+import { Field, reduxForm} from 'redux-form';
+import { fetchEvents, searchEvents } from '../actions';
+import SearchForm from './events_search';
 import Nav from './nav'
 
 class EventsIndex extends Component {
+
   componentDidMount(){
     this.props.fetchEvents();
   }
@@ -23,18 +25,12 @@ class EventsIndex extends Component {
     });
   }
 
-renderSearchEvents(){
-
-}
-
   render(){
     return (
         <div className="App">
           <Nav />
           <div >
-            <center>
-              <SearchBar />
-            </center>
+            <SearchForm />
             <ul className="list-group">
               {this.renderEvents()}
             </ul>
@@ -45,7 +41,6 @@ renderSearchEvents(){
             </Link>
           </div>
         </div>
-
       );
   }
 }

@@ -6,9 +6,11 @@ import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import promise from 'redux-promise';
 import reducers from './reducers';
 import EventsIndex from './components/events_index';
-import SearchBar from './components/events_search';
+import SearchForm from './components/events_search';
 import EventsNew from './components/events_new';
 import EventsShow from './components/events_show';
+import './style.css';
+import Footer from '../src/components/footer'
 
 import MapView from './components/map_view';
 import DateTest from './components/date_test';
@@ -25,9 +27,10 @@ ReactDOM.render(
           <Route path="/events/:id" component={EventsShow} />
           <Route path="/map" component={MapView} />
           <Route path="/time" component={DateTest} />
+          <Route path="/search" component={SearchForm} />
           <Route path="/" component={EventsIndex} />
-          <Route path="/" component={SearchBar} />
         </Switch>
+        <Footer />
       </div>
     </BrowserRouter>
   </Provider>

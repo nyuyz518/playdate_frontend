@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { FETCH_EVENTS, FETCH_EVENT, DELETE_EVENT } from '../actions';
+import { FETCH_EVENTS, SEARCH_EVENTS, FETCH_EVENT, DELETE_EVENT } from '../actions';
 
 export default function(state = {}, action) {
   switch (action.type) {
@@ -9,7 +9,7 @@ export default function(state = {}, action) {
       return {...state, [action.payload.data.id]:action.payload.data}
 
     case FETCH_EVENTS:
-      // console.log(action.payload.data);
+    case SEARCH_EVENTS:
       return _.mapKeys(action.payload.data, 'id');
     default:
       return state;

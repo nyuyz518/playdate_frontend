@@ -21,19 +21,20 @@ class EventsShow extends Component {
 
   render(){
     const { event } = this.props;
-
     if(!event){
       return(
         <div> Loading... </div>
       );
     }
+    const coordinates = {lat: event.lat, lng: event.lng};
 
     return (
       <div>
-        <p>Picture: {event.img}</p>
-        <p>Time:{event.time}</p>
+        <p>Picture:  {event.img}</p>
+        <p>Start Time: {event.start_time}</p>
+        <p>End Time: {event.end_time}</p>
         <p>Description: {event.description}</p>
-        <p>Address: {event.location.address}</p>
+        <p>Address: {event.address}</p>
 
         <p>Map View </p>
         <Map
@@ -41,11 +42,11 @@ class EventsShow extends Component {
           style={{width: '600px', height: '400px', position: 'relative'}}
           containerStyle={{width: '600px', height: '400px', position: 'relative'}}
           google={this.props.google}
-          initialCenter={event.location.coordinates}
-          center={event.location.coordinates}
-          zoom={14} >
+          initialCenter={coordinates}
+          center={coordinates}
+          zoom={14.0005} >
 
-          <Marker position={event.location.coordinates}
+          <Marker position={coordinates}
                   title={event.description} />
         </Map>
         <br/>
