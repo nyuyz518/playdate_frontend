@@ -8,9 +8,9 @@ export default function(state = {}, action) {
     case FETCH_EVENT:
       return {...state, [action.payload.data.id]:action.payload.data}
 
-    case FETCH_EVENTS:
     case SEARCH_EVENTS:
-      return _.mapKeys(action.payload.data, 'id');
+    case FETCH_EVENTS:
+      return  _.mapKeys(action.payload.data, 'id');
     default:
       return state;
   }

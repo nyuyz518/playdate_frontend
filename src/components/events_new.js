@@ -6,6 +6,7 @@ import { createEvent, fetchEvent, updateEvent } from '../actions';
 import { ACInput } from './autocomplete_input.js'
 import { GoogleApiWrapper } from 'google-maps-react';
 import DatePicker from "react-datepicker";
+import Dropzone from 'react-dropzone'
 import "react-datepicker/dist/react-datepicker.css";
 import logo1 from './createplaydate.jpg'
 
@@ -16,6 +17,47 @@ class EventsNew extends Component {
     if(id){
       this.props.fetchEvent(id);
     }
+  }
+
+  renderDropzone(field){
+    const value = field.input.value;
+      return (
+        <div>
+          <Dropzone
+            name={field.name}
+            multiple={false}
+            accept=".jpeg,.jpg,.png"
+            onDrop={(accepted, rejected) => {
+              let images = [];
+              accepted.forEach((file: any) => {
+                const reader: FileReader = new FileReader();
+                reader.onload = () => {
+                    let fileAsBase64: any = "data:" + file.type + ";base64," +reader.result.substr(reader.result.indexOf(",") + 1);
+
+                    images.push(fileAsBase64);
+                };
+
+                reader.onabort = () => console.log("file reading was aborted");
+                reader.onerror = () => console.log("file reading has failed");
+
+                reader.readAsDataURL(file);
+              });
+              field.input.onChange({images: images});
+            }}
+          >
+            <div>Drop your picture here</div>
+
+       </Dropzone>
+       <div>{value.images&&
+         <img src={value.images[0]}/>
+       }
+       </div>
+          {field.meta.touched &&
+            field.meta.error &&
+            <span className="error">{field.meta.error}</span>}
+
+        </div>
+      );
   }
 
   renderTextField(field){
@@ -65,7 +107,7 @@ class EventsNew extends Component {
       lat: values.location.coordinates.lat,
       lng: values.location.coordinates.lng,
       description: values.description,
-      img: values.img
+      img: values.image.images[0]
     };
     if(id){
       this.props.updateEvent(id, backend_values, ()=> {
@@ -82,10 +124,13 @@ class EventsNew extends Component {
     const { handleSubmit } = this.props;
     return (
       <div>
-        <div className="navWrapper" >
-    				<img src={logo1} alt="logo1" />
-    		</div>
-        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+        <div className="jumbotron jumbotron-fluid">
+          <div className="navWrapper" >
+            <img src={logo1} alt="logo1" />
+          </div>
+        </div>
+
+        <form id="new_form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
           <p>Pick the Start Time</p>
           <Field
             label="Start Time"
@@ -113,7 +158,7 @@ class EventsNew extends Component {
           <Field
             label="Upload A Picture"
             name="image"
-            component={this.renderTextField}
+            component={this.renderDropzone}
           />
           <button type="submit" className="btn btn-primary">Submit</button>
           <Link className="btn btn-danger" to="/">Cancel</Link>
@@ -158,7 +203,7 @@ function mapStateToProps({ events }, ownProps) {
             lng:event.lng}
           },
         description: event.description,
-        img: event.img
+        image: {images:[ event.img ]}
       }
     };
   }else{

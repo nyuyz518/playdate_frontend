@@ -1,3 +1,9 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -9,7 +15,6 @@ import EventsIndex from './components/events_index';
 import SearchForm from './components/events_search';
 import EventsNew from './components/events_new';
 import EventsShow from './components/events_show';
-import './style.css';
 import Footer from '../src/components/footer'
 
 import MapView from './components/map_view';

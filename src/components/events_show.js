@@ -30,7 +30,7 @@ class EventsShow extends Component {
 
     return (
       <div>
-        <p>Picture:  {event.img}</p>
+        <p>Picture:  <img src={event.img}/></p>
         <p>Start Time: {event.start_time}</p>
         <p>End Time: {event.end_time}</p>
         <p>Description: {event.description}</p>

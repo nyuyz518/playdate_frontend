@@ -10,5 +10,23 @@ form a {
  body {
   margin: 0;
   padding: 0;
-  font-family: "Courier New";
+  font-family: "inherit";
+}
+
+#search_form {
+  float: left;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 16px;
+  font-family:inherit;
+}
+
+#new_form{
+  float: left;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 16px;
+  font-family:inherit;
 }

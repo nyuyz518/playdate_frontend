@@ -12,7 +12,7 @@ class SearchForm extends Component {
   renderDatePicker({input, label, placeholder, defaultValue, meta: {touched, error} }) {
     return (
         <div>
-          <span> {label} </span>
+
           <DatePicker
              selected={input.value.date}
              onChange={(date)=>{
@@ -61,12 +61,19 @@ class SearchForm extends Component {
     const {coordinates} = values.search_location;
     const latN = coordinates.lat + this.mileToLat(radius);
     const latS = coordinates.lat - this.mileToLat(radius);
-    let latG = latS;
-    if(Math.abs(latN) < Math.abs(latS)){
-      latG = latN;
+    let latL = latS;
+    if(Math.abs(latN) > Math.abs(latS)){
+      latL = latN;
     }
-    const lngE = coordinates.lng + this.mileToLng(radius, latG);
-    const lngW = coordinates.lng - this.mileToLng(radius, latG);
+    let lngE = coordinates.lng + this.mileToLng(radius, latL);
+    let lngW = coordinates.lng - this.mileToLng(radius, latL);
+
+    if(lngE > 180){
+      lngE -= 360;
+    }
+    if(lngW < -180) {
+      lngW += 360;
+    }
 
     this.props.searchEvents({
       time: values.search_time.date,
@@ -80,15 +87,16 @@ class SearchForm extends Component {
   render(){
     const { handleSubmit } = this.props;
     return (
-      <div>
+      <div id="search_form">
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <p>Search</p>
+          <div>Find A Playdates</div>
           <Field
             label="Time"
             name="search_time"
             placeholder="Time"
             component={this.renderDatePicker}
           />
+
           <Field
             label="Location"
             name="search_location"
@@ -96,6 +104,7 @@ class SearchForm extends Component {
             google={this.props.google}
             component={ACInput}
           />
+
           <Field
             label="Within"
             name="search_radius"
@@ -104,7 +113,7 @@ class SearchForm extends Component {
           />
           <span>Miles</span>
           <p/>
-          <button type="submit" className="btn btn-primary"> Search </button>
+          <button id="search_form_btn" type="submit" className="btn btn-primary"> Search </button>
         </form>
       </div>
     )
