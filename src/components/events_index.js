@@ -6,6 +6,7 @@ import { Field, reduxForm} from 'redux-form';
 import { fetchEvents, searchEvents } from '../actions';
 import SearchForm from './events_search';
 import Nav from './nav'
+
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 class EventsIndex extends Component {
@@ -51,12 +52,16 @@ class EventsIndex extends Component {
     return (
         <div className="App">
           <Nav />
-          <div >
+            
+
             <SearchForm />
+
+          <div>
             <ul className="list-group">
               {this.renderEvents()}
             </ul>
           </div>
+
           <div id="index-map">
             <Map
               ref={this.googleMap}
@@ -67,6 +72,7 @@ class EventsIndex extends Component {
               {this.renderMarkers()}
             </Map>
           </div>
+
           <div className="text-xs-right">
             <Link className="btn btn-primary" to="/events/new">
               Add Your Playdate

@@ -17,6 +17,7 @@ import EventsNew from './components/events_new';
 import EventsShow from './components/events_show';
 import Footer from '../src/components/footer'
 
+
 import MapView from './components/map_view';
 import DateTest from './components/date_test';
 
