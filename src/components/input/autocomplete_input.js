@@ -36,7 +36,7 @@ export class ACInput extends Component {
       <div className="form-group">
         <label>{this.props.label}</label>
           <input
-            className="form-control"
+            className="w3-input w3-border"
             type="text"
             defaultValue={address}
             ref={this.pacInput}

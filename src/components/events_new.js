@@ -3,7 +3,8 @@ import { Field, reduxForm} from 'redux-form';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { createEvent, fetchEvent, updateEvent } from '../actions';
-import { ACInput } from './autocomplete_input.js'
+import { renderDatePicker, renderTextField, renderDropzone } from './input/input_fields.js';
+import { ACInput } from './input/autocomplete_input.js'
 import { GoogleApiWrapper } from 'google-maps-react';
 import DatePicker from "react-datepicker";
 import Dropzone from 'react-dropzone'
@@ -18,85 +19,6 @@ class EventsNew extends Component {
       this.props.fetchEvent(id);
     }
   }
-
-  renderDropzone(field){
-    const value = field.input.value;
-      return (
-        <div>
-          <Dropzone
-            name={field.name}
-            multiple={false}
-            accept=".jpeg,.jpg,.png"
-            onDrop={(accepted, rejected) => {
-              let images = [];
-              accepted.forEach((file: any) => {
-                const reader: FileReader = new FileReader();
-                reader.onload = () => {
-                    let fileAsBase64: any = "data:" + file.type + ";base64," +reader.result.substr(reader.result.indexOf(",") + 1);
-
-                    images.push(fileAsBase64);
-                };
-
-                reader.onabort = () => console.log("file reading was aborted");
-                reader.onerror = () => console.log("file reading has failed");
-
-                reader.readAsDataURL(file);
-              });
-              field.input.onChange({images: images});
-            }}
-          >
-            <div>Drop your picture here</div>
-
-       </Dropzone>
-       <div>{value.images&&
-         <img src={value.images[0]}/>
-       }
-       </div>
-          {field.meta.touched &&
-            field.meta.error &&
-            <span className="error">{field.meta.error}</span>}
-
-        </div>
-      );
-  }
-
-  renderTextField(field){
-    return(
-      <div className="form-group">
-        <label>{field.label}</label>
-          <input
-            className="form-control"
-            type="text"
-            {...field.input}
-          />
-          <div className="text-help red">
-            {field.meta.touched ? field.meta.error : " "}
-          </div>
-      </div>
-    );
-  }
-
-  renderDatePicker({input, placeholder, defaultValue, meta: {touched, error} }) {
-    return (
-        <div>
-            <DatePicker
-               selected={input.value.date}
-               onChange={(date)=>{
-                 return input.onChange({date:date});
-               }}
-               showTimeSelect
-               timeFormat="HH:mm"
-               timeIntervals={60}
-               dateFormat="MM/d, yyyy h:mm aa"
-               timeCaption="time"
-            />
-            <div className="text-help red">
-              {touched ? error : " "}
-            </div>
-        </div>
-    );
-  }
-
 
   onSubmit(values){
     const { id } = this.props.match.params;
@@ -135,14 +57,14 @@ class EventsNew extends Component {
           <Field
             label="Start Time"
             name="start_time"
-            component={this.renderDatePicker}
+            component={renderDatePicker}
             />
           <p>Pick the End Time</p>
           <Field
             label="End Time"
             name="end_time"
             placeholder="Pick the End Time"
-            component={this.renderDatePicker}
+            component={renderDatePicker}
             />
           <Field
             label="Location"
@@ -153,15 +75,15 @@ class EventsNew extends Component {
           <Field
             label="Description"
             name="description"
-            component={this.renderTextField}
+            component={renderTextField}
           />
           <Field
             label="Upload A Picture"
             name="image"
-            component={this.renderDropzone}
+            component={renderDropzone}
           />
-          <button type="submit" className="btn btn-primary">Submit</button>
-          <Link className="btn btn-danger" to="/">Cancel</Link>
+          <button type="submit" className="w3-hoverable w3-button w3-round w3-blue w3-left">Submit</button>
+          <Link className="w3-hoverable w3-button w3-round w3-red w3-center" to="/">Cancel</Link>
         </form>
       </div>
     );

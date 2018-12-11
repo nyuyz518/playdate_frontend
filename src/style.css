@@ -30,3 +30,12 @@ form a {
   font-size: 16px;
   font-family:inherit;
 }
+
+#event-info{
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 16px;
+  font-family:inherit;
+	color : #3C4447
+}

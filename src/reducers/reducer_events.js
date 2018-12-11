@@ -6,7 +6,7 @@ export default function(state = {}, action) {
     case DELETE_EVENT:
       return _.omit(state, action.payload)
     case FETCH_EVENT:
-      return {...state, [action.payload.data.id]:action.payload.data}
+      return {...state, [action.payload.data.id] : action.payload.data}
 
     case SEARCH_EVENTS:
     case FETCH_EVENTS:

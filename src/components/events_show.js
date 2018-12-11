@@ -18,6 +18,18 @@ class EventsShow extends Component {
     });
   }
 
+  formatDate(dateStr){
+    const date= new Date(dateStr);
+    const dateformat = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'});
+
+    return dateformat.format(date);
+  }
 
   render(){
     const { event } = this.props;
@@ -29,42 +41,52 @@ class EventsShow extends Component {
     const coordinates = {lat: event.lat, lng: event.lng};
 
     return (
-      <div>
-        <p>Picture:  <img src={event.img}/></p>
-        <p>Start Time: {event.start_time}</p>
-        <p>End Time: {event.end_time}</p>
-        <p>Description: {event.description}</p>
-        <p>Address: {event.address}</p>
+      <div id="event-info">
+        <div className="w3-cell-row">
+          <div className="w3-container w3-cell w3-padding-16" style={{width : "600px", height: "400px"}}>
+            <Map
+              style={{width: '100%', height: '100%', position: 'relative'}}
+              containerStyle={{width: '100%', height: '100%', position: 'relative'}}
+              google={this.props.google}
+              initialCenter={coordinates}
+              center={coordinates}
+              zoom={14.0005} >
 
-        <p>Map View </p>
-        <Map
-          class='google-map'
-          style={{width: '600px', height: '400px', position: 'relative'}}
-          containerStyle={{width: '600px', height: '400px', position: 'relative'}}
-          google={this.props.google}
-          initialCenter={coordinates}
-          center={coordinates}
-          zoom={14.0005} >
+              <Marker position={coordinates}
+                      title={event.description} />
+            </Map>
+          </div>
+          <div className="w3-container w3-cell">
+            <div className="w3-round" style={{width:'55%'}}>
+              <p ><img src={event.img}/></p>
+            </div>
+            <p>Start Time: {this.formatDate(event.start_time)}</p>
+            <p>End Time: {this.formatDate(event.end_time)}</p>
+            <p>Description: {event.description}</p>
+            <p>Address: {event.address}</p>
+          </div>
+        </div>
 
-          <Marker position={coordinates}
-                  title={event.description} />
-        </Map>
-        <br/>
+        <div className = "w3-container" >
+          <div className="w3-bar">
+            <Link
+              className="w3-hoverable w3-button w3-round w3-blue"
+              to={`update/${event.id}`}
+              >
+              Edit
+            </Link>
 
-        <Link
-          className="btn btn-primary pull-xs-left"
-          to={`update/${event.id}`}
-          >
-          Edit
-        </Link>
+            <button
+              className="w3-hoverable w3-button w3-round w3-red"
+              onClick={this.onDeleteClick.bind(this)}>
+              Delete
+            </button>
 
-        <button
-          className="btn btn-danger pull-xs-center"
-          onClick={this.onDeleteClick.bind(this)}>
-          Delete
-        </button>
-
-        <Link className="btn btn-primary" to="/"> Back to All Playdates</Link>
+            <Link
+              className="w3-hoverable w3-button w3-round w3-blue"
+              to="/"> Back to All Playdates</Link>
+          </div>
+        </div>
       </div>
     );
   }
