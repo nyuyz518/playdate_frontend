@@ -10,40 +10,40 @@ export const SEARCH_EVENTS = 'search_events';
 const ROOT_URL = 'http://localhost:3000/api/v1';
 
 export function fetchEvents(){
-  const request = axios.get(`${ROOT_URL}/events`);
+  const response = axios.get(`${ROOT_URL}/events`);
   return{
     type: FETCH_EVENTS,
-    payload: request
+    payload: response
   };
 }
 
 export function searchEvents(values){
-  const request = axios.get(`${ROOT_URL}/events/search`, {params:values});
+  const response = axios.get(`${ROOT_URL}/events/search`, {params:values});
   return{
     type: SEARCH_EVENTS,
-    payload: request
+    payload: response
   };
 }
 
 export function createEvent(values, callback){
-  const request = axios.post(`${ROOT_URL}/events`, values)
+  const response = axios.post(`${ROOT_URL}/events`, values)
     .then(()=>callback());
   return{
     type: CREATE_EVENT,
-    payload: request
+    payload: response
   };
 }
 
 export function fetchEvent(id){
-  const request = axios.get(`${ROOT_URL}/events/${id}`);
+  const response = axios.get(`${ROOT_URL}/events/${id}`);
   return{
     type: FETCH_EVENT,
-    payload: request
+    payload: response
   };
 }
 
 export function deleteEvent(id, callback){
-  const request = axios.delete(`${ROOT_URL}/events/${id}`)
+  const response = axios.delete(`${ROOT_URL}/events/${id}`)
     .then(()=>callback());
   return {
     type: DELETE_EVENT,
@@ -52,10 +52,10 @@ export function deleteEvent(id, callback){
 }
 
 export function updateEvent(id, values, callback){
-  const request = axios.patch(`${ROOT_URL}/events/${id}`, values)
+  const response = axios.patch(`${ROOT_URL}/events/${id}`, values)
     .then(()=>callback());;
   return{
     type: UPDATE_EVENT,
-    payload: request
+    payload: response
   };
 }

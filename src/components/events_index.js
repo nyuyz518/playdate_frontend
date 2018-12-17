@@ -171,7 +171,9 @@ function validate(values){
 }
 
 function mapStateToProps(state){
-  return {events: state.events}
+  return {
+    events: state.events
+  }
 }
 
 export default connect(mapStateToProps,{fetchEvents, searchEvents})(
