@@ -1,4 +1,4 @@
-import logo from './Playdate_Logo.jpg'
+import logo from './playdateLogo.jpg'
 import React from 'react'
 
 const Nav = () => {

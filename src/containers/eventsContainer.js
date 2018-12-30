@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import EventsIndex from './components/events_index';
-import SearchBar from './components/events_search';
+// import SearchBar from './components/events_search';
 
 export default class EventsContainer extends Component{
   constructor(props){
@@ -21,7 +21,7 @@ export default class EventsContainer extends Component{
     return(
       <div>
         <SearchBar searchForm={this.state.searchForm} handleChange={this.handleChange} />
-        <EventsIndex searchVal={this.state.searchForm} playdates={this.state.playdates} />
+        // <EventsIndex searchVal={this.state.searchForm} playdates={this.state.playdates} />
       </div>
     )
   }

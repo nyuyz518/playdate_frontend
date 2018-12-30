@@ -3,13 +3,13 @@ import { Field, reduxForm} from 'redux-form';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { createEvent, fetchEvent, updateEvent } from '../actions';
-import { renderDatePicker, renderTextField, renderDropzone } from './input/input_fields.js';
-import { ACInput } from './input/autocomplete_input.js'
+import { renderDatePicker, renderTextField, renderDropzone } from './input/inputFields.js';
+import { ACInput } from './input/autocompleteInput.js'
 import { GoogleApiWrapper } from 'google-maps-react';
 import DatePicker from "react-datepicker";
 import Dropzone from 'react-dropzone'
 import "react-datepicker/dist/react-datepicker.css";
-import logo1 from './createplaydate.jpg'
+import logo1 from './createPlaydateLogo.jpeg'
 
 class EventsNew extends Component {
 
@@ -46,44 +46,51 @@ class EventsNew extends Component {
     const { handleSubmit } = this.props;
     return (
       <div>
-        <div className="jumbotron jumbotron-fluid">
+        <div className="w3-container w3-cell">
           <div className="navWrapper" >
             <img src={logo1} alt="logo1" />
           </div>
         </div>
+        <form className="w3-container" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+          <br />
+          <div className="w3-container w3-cell w3-cell-middle">
+            <label className="w3-text-blue"><g>Pick the Start Time</g></label>
+            <Field
+              name="start_time"
+              component={renderDatePicker}
+              />
+            <label className="w3-text-blue"><g>Pick the End Time</g></label>
+            <Field
+              name="end_time"
+              component={renderDatePicker}
+              />
+          </div>
 
-        <form id="new_form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-          <p>Pick the Start Time</p>
-          <Field
-            label="Start Time"
-            name="start_time"
-            component={renderDatePicker}
+          <div className="w3-container" style={{width : "35%"}}>
+            <label className="w3-text-blue"><g>Location</g></label>
+            <Field
+              name="location"
+              google={this.props.google}
+              component={ACInput}
             />
-          <p>Pick the End Time</p>
-          <Field
-            label="End Time"
-            name="end_time"
-            placeholder="Pick the End Time"
-            component={renderDatePicker}
+
+            <label className="w3-text-blue"><g>Description</g></label>
+            <Field
+              name="description"
+              component={renderTextField}
             />
-          <Field
-            label="Location"
-            name="location"
-            google={this.props.google}
-            component={ACInput}
-          />
-          <Field
-            label="Description"
-            name="description"
-            component={renderTextField}
-          />
-          <Field
-            label="Upload A Picture"
-            name="image"
-            component={renderDropzone}
-          />
-          <button type="submit" className="w3-hoverable w3-button w3-round w3-blue w3-left">Submit</button>
-          <Link className="w3-hoverable w3-button w3-round w3-red w3-center" to="/">Cancel</Link>
+          </div>
+          <div className="w3-container w3-cell w3-cell-bottom">
+            <label className="w3-text-blue"><g>Upload A Picture</g></label>
+            <Field
+              label="Upload A Picture"
+              name="image"
+              component={renderDropzone}
+            />
+
+            <button type="submit" className="w3-hoverable w3-button w3-round w3-blue w3-left">Submit</button>
+            <Link className="w3-hoverable w3-button w3-round w3-red w3-center" to="/">Cancel</Link>
+          </div>
         </form>
       </div>
     );
@@ -111,8 +118,8 @@ let WrappedEventsNew = GoogleApiWrapper({
   apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(EventsNew);
 
-function mapStateToProps({ events }, ownProps) {
-  const event = events[ownProps.match.params.id];
+function mapStateToProps({ eventState }, ownProps) {
+  const event = eventState[ownProps.match.params.id];
   if(event){
     return {
       initialValues: {

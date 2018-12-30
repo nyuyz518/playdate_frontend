@@ -3,14 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Field, reduxForm} from 'redux-form';
-import { renderDatePicker, renderTextField, renderDropzone } from './input/input_fields.js';
-import { ACInput } from './input/autocomplete_input.js';
+import { renderDatePicker, renderTextField, renderDropzone } from './input/inputFields.js';
+import { ACInput } from './input/autocompleteInput.js';
 import { fetchEvents, searchEvents } from '../actions';
 import Nav from './nav';
 import { Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 class EventsIndex extends Component {
-
   constructor(props) {
     super(props);
     this.googleMap = React.createRef();
@@ -27,7 +26,7 @@ class EventsIndex extends Component {
     map.fitBounds(latlngbounds);
   }
 
-  renderMarkers() {
+  renderMarkers(){
     return _.map(this.props.events, event => {
       return (
         <Marker position={{lat: event.lat, lng: event.lng}}
@@ -77,7 +76,7 @@ class EventsIndex extends Component {
     }
 
     this.props.searchEvents({
-      time: values.search_time.date,
+      time: values.search_time.date.getTime() ,
       lat_n: latN,
       lat_s: latS,
       lng_e: lngE,
@@ -167,24 +166,35 @@ function validate(values){
   if(!values.search_time){
     error.search_time = "Pick a time";
   }
+  if (!values.search_location){
+    error.search_location = "Enter a location";
+  }
   return error;
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    fetchEvents: () => dispatch(fetchEvents()),
+    searchEvents: (a) => dispatch(searchEvents(a))
+  };
 }
 
 function mapStateToProps(state){
   return {
-    events: state.events
+    events: state.eventState.events,
+    loading: state.eventState.loading
   }
 }
 
-export default connect(mapStateToProps,{fetchEvents, searchEvents})(
-  reduxForm({
-    validate,
-    form:'searchEventForm'
-  })(
-    GoogleApiWrapper({
-      apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+export default connect(mapStateToProps, mapDispatchToProps)(
+    reduxForm({
+      validate,
+      form:'searchEventForm'
     })(
-      EventsIndex
+      GoogleApiWrapper({
+        apiKey: process.env.REACT_APP_GOOGLE_API_KEY
+      })(
+        EventsIndex
+      )
     )
-  )
 );

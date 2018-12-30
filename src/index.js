@@ -1,30 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from '../src/components/App.js';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { BrowserRouter, Route, Switch} from 'react-router-dom'
-import promise from 'redux-promise';
-import reducers from './reducers';
-import EventsIndex from './components/events_index';
-import EventsNew from './components/events_new';
-import EventsShow from './components/events_show';
-import Footer from '../src/components/footer'
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers/index';
 
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const composeEnhancers = typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    }) : compose;
+
+const createStoreWithMiddleware = composeEnhancers(
+  applyMiddleware(thunk)
+)
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <BrowserRouter>
-      <div>
-        <Switch>
-          <Route path="/events/new" key="event_new" component={EventsNew} />
-          <Route path="/events/update/:id" key="event_update" component={EventsNew} />
-          <Route path="/events/:id" component={EventsShow} />
-          <Route path="/" component={EventsIndex} />
-        </Switch>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  </Provider>
-  , document.querySelector('.root'));
+  <Provider store={store} >
+    <App />
+  </Provider>, document.querySelector('.root')
+)

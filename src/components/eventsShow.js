@@ -20,7 +20,7 @@ class EventsShow extends Component {
 
   formatDate(dateStr){
     const date= new Date(dateStr);
-    const dateformat = new Intl.DateTimeFormat('en-US', {
+    const dateformat = new Intl.DateTimeFormat('en-US',{
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -92,8 +92,11 @@ class EventsShow extends Component {
   }
 }
 
-function mapStateToProps({ events },ownProps) {
-  return {event: events[ownProps.match.params.id]};
+function mapStateToProps({ eventState }, ownProps) {
+  return {
+    loading: eventState.loading,
+    event: eventState.event
+  };
 }
 
 const connectedView = connect(mapStateToProps,{fetchEvent, deleteEvent})(EventsShow);

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import EventsReducer from './reducer_events';
+import EventsReducer from './reducerEvents';
 
 const rootReducer = combineReducers({
-  events: EventsReducer,
+  eventState: EventsReducer,
   form: formReducer
 });
 
