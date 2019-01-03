@@ -1,25 +1,30 @@
-import React from 'react'
+import React, { Component }from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-import { loginUser } from '../actions/user'
-import { Button, Form, Segment, Message } from 'semantic-ui-react'
-import { Container } from 'semantic-ui-react'
+import { signupUser } from '../actions/user'
+import { Container, Button, Form, Segment, Message } from 'semantic-ui-react'
+import ReactDropzone from 'react-dropzone';
 
-
-class LoginForm extends React.Component {
+class SignupForm extends Component {
   state = {
     username: '',
-    password_digest: ''
+    password_digest: '',
+    email:'',
+    avatar:null,
   }
 
-
-  handleChange = (e, semanticInputData) => {
-    this.setState({ [semanticInputData.username]: semanticInputData.value })
+  handleChange = e => {
+    this.setState({
+      [e.target.username]: e.target.value
+     })
   }
 
   handleLoginSubmit = () => {
-    this.props.loginUser(this.state.username, this.state.password_digest)
-    this.setState({ username: '', password_digest: '' })
+    this.props.signupUser(this.state.username, this.state.password_digest)
+    this.setState({
+      username: '',
+      password_digest: ''
+    })
   }
 
   render() {
@@ -45,20 +50,21 @@ class LoginForm extends React.Component {
                 value={this.state.username}
               />
               <Form.Input
-                type="password"
+                type="password_digest"
                 label="password_digest"
                 placeholder="password_digest"
-                name="password_digest"
+                username="password_digest"
                 onChange={this.handleChange}
                 value={this.state.password_digest}
               />
             </Form.Field>
-            <Button type="submit">Login</Button>
+            <Button type="submit">Sign Up</Button>
           </Form>
         </Segment>
       </Container>
     )
   }
+
 }
 
 const mapStateToProps = ({ usersReducer: { authenticatingUser, failedLogin, error, loggedIn } }) => ({
@@ -68,4 +74,4 @@ const mapStateToProps = ({ usersReducer: { authenticatingUser, failedLogin, erro
   loggedIn
 })
 
-export default connect(mapStateToProps, { loginUser })(LoginForm)
+export default connect(mapStateToProps, { signupUser })(SignupForm)

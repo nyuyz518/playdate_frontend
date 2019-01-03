@@ -8,7 +8,7 @@ const defaultState = {
   error: null
 }
 
-const usersReducer = (state = defaultState, action) => {
+const UsersReducer = (state = defaultState, action) => {
   switch (action.type) {
 
     case SET_CURRENT_USER:
@@ -29,4 +29,4 @@ const usersReducer = (state = defaultState, action) => {
   }
 }
 
-export default usersReducer
+export default UsersReducer

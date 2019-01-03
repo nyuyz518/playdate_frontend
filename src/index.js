@@ -18,7 +18,7 @@ const createStoreWithMiddleware = composeEnhancers(
 )
 
 ReactDOM.render(
-  <Provider store={store} >
-    <App />
-  </Provider>, document.querySelector('.root')
+  <Provider store={store}>
+      <App />
+  </Provider>,document.getElementById('root')
 )
