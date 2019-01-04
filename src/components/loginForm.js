@@ -12,7 +12,6 @@ class LoginForm extends React.Component {
     password_digest: ''
   }
 
-
   handleChange = (e, semanticInputData) => {
     this.setState({ [semanticInputData.username]: semanticInputData.value })
   }

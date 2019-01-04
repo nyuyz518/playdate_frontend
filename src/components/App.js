@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
+
 import { fetchCurrentUser } from '../actions/user';
 import LoginForm from './loginForm';
 import SignupForm from './signupForm';
@@ -51,4 +52,4 @@ function mapDispatchToProps(dispatch) {
 }
 const mapStateToProps = ({ usersReducer: user }) => ({ user })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default connect(mapStateToProps, mapDispatchToProps)(App)
