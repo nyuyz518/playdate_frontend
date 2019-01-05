@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch} from 'react-router-dom'
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import EventsIndex from './eventsIndex';
 import EventsNew from './eventsNew';
 import EventsShow from './eventsShow';
