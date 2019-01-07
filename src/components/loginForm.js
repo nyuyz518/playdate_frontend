@@ -1,24 +1,32 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { loginUser } from '../actions/user'
 import { Button, Form, Segment, Message } from 'semantic-ui-react'
 import { Container } from 'semantic-ui-react'
+import sha256 from 'crypto-js/sha256'
 
-
-class LoginForm extends React.Component {
-  state = {
-    username: '',
-    password_digest: ''
+class LoginForm extends Component {
+  constructor() {
+    super()
+    this.state = {
+      username: '',
+      password: ''
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this)
   }
 
-  handleChange = (e, semanticInputData) => {
-    this.setState({ [semanticInputData.username]: semanticInputData.value })
+  handleChange (e, semanticInputData) {
+    this.setState({
+      [semanticInputData.name]: semanticInputData.value
+    })
   }
 
-  handleLoginSubmit = () => {
-    this.props.loginUser(this.state.username, this.state.password_digest)
-    this.setState({ username: '', password_digest: '' })
+  handleLoginSubmit () {
+    let password_digest = sha256(this.state.password).toString();
+    this.props.loginUser(this.state.username, password_digest)
+    this.setState({ username: '', password: '' })
   }
 
   render() {
@@ -37,7 +45,6 @@ class LoginForm extends React.Component {
             <Message error header={this.props.failedLogin ? this.props.error : null} />
             <Form.Field>
               <Form.Input
-                label="username"
                 placeholder="username"
                 name="username"
                 onChange={this.handleChange}
@@ -45,11 +52,10 @@ class LoginForm extends React.Component {
               />
               <Form.Input
                 type="password"
-                label="password_digest"
-                placeholder="password_digest"
-                name="password_digest"
+                placeholder="password"
+                name="password"
                 onChange={this.handleChange}
-                value={this.state.password_digest}
+                value={this.state.password}
               />
             </Form.Field>
             <Button type="submit">Login</Button>
