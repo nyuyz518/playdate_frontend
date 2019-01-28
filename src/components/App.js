@@ -9,6 +9,7 @@ import EventsIndex from './eventsIndex';
 import EventsNew from './eventsNew';
 import EventsShow from './eventsShow';
 import Footer from './footer'
+import history from './history'
 
 class App extends Component {
   componentDidMount() {
@@ -22,21 +23,21 @@ class App extends Component {
   render() {
     const loggedIn = this.props.user.loggedIn
     return (
-      <Router>
+      <Router history={history}>
         <Fragment>
             <Switch>
               <Route exact path="/login" component={LoginForm} />
               <Route exact path="/signup" component={SignupForm} />
-              <Route path="/" component={EventsIndex} />
-            </Switch>
+              <Route exact path="/" component={EventsIndex} />
+
             { loggedIn ? (
-              <Fragment>
-                <Route path="/events/new" key="event_new" component={EventsNew} />
-                <Route path="/events/update/:id" key="event_update" component={EventsNew} />
-                <Route path="/events/:id" component={EventsShow} />
-                <Route path="/" component={EventsIndex} />
-              </Fragment>
+                <Switch>
+                  <Route path="/events/new" key="event_new" component={EventsNew} />
+                  <Route path="/events/update/:id" key="event_update" component={EventsNew} />
+                  <Route path="/events/:id" component={EventsShow} />
+                </Switch>
             ) : null}
+            </Switch>
             <Footer />
         </Fragment>
       </Router>
@@ -52,4 +53,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(App))

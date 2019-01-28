@@ -5,7 +5,7 @@ export const LOG_OUT = 'LOG_OUT'
 
 const ROOT_URL = 'http://localhost:3000/api/v1';
 
-export const loginUser = (username, password_digest) => {
+export const loginUser = (username, password) => {
   return (dispatch) => {
     dispatch({ type: AUTHENTICATING_USER })
 
@@ -18,7 +18,7 @@ export const loginUser = (username, password_digest) => {
       body: JSON.stringify({
         user: {
           username: username,
-          password_digest: password_digest
+          password: password
         }
       })
     })
@@ -66,13 +66,13 @@ export const authenticatingUser = () => ({ type: AUTHENTICATING_USER })
 
 export const logOut = () => ({type: LOG_OUT })
 
-export const signupUser = (username, password_digest) => {
+export const signupUser = (username, password) => {
   return (dispatch) => {
     dispatch({ type: AUTHENTICATING_USER })
 
     let data = new FormData()
     data.append('username', username)
-    data.append('password_digest', password_digest)
+    data.append('password', password)
 
 
     fetch(`${ROOT_URL}/users`, {

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { signupUser } from '../actions/user'
 import { Container, Button, Form, Segment, Message } from 'semantic-ui-react'
-import sha256 from 'crypto-js/sha256'
 
 class SignupForm extends Component {
   constructor() {
@@ -23,8 +22,7 @@ class SignupForm extends Component {
   }
 
   handleLoginSubmit () {
-    let password_digest = sha256(this.state.password).toString();
-    this.props.signupUser(this.state.username, password_digest)
+    this.props.signupUser(this.state.username, this.state.password)
     this.setState({ username: '', password: '' })
   }
   // state = {

@@ -4,7 +4,6 @@ import { Redirect } from 'react-router'
 import { loginUser } from '../actions/user'
 import { Button, Form, Segment, Message } from 'semantic-ui-react'
 import { Container } from 'semantic-ui-react'
-import sha256 from 'crypto-js/sha256'
 
 class LoginForm extends Component {
   constructor() {
@@ -24,8 +23,7 @@ class LoginForm extends Component {
   }
 
   handleLoginSubmit () {
-    let password_digest = sha256(this.state.password).toString();
-    this.props.loginUser(this.state.username, password_digest)
+    this.props.loginUser(this.state.username, this.state.password)
     this.setState({ username: '', password: '' })
   }
 

@@ -18,7 +18,12 @@ const ROOT_URL = 'http://localhost:3000/api/v1';
 export function fetchEvents(){
   return(dispatch) => {
     dispatch({ type: FETCH_EVENTS });
-    return fetch(`${ROOT_URL}/events`)
+    return fetch(`${ROOT_URL}/events`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
       .then(response => response.json())
       .then(events => dispatch({type: FETCH_EVENTS_COMPLETE, payload: events}))
   }
@@ -29,7 +34,12 @@ export function searchEvents(values){
   Object.keys(values).forEach((key) => url.searchParams.append(key, values[key]))
   return(dispatch) => {
     dispatch({ type: SEARCH_EVENTS });
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
       .then(response => response.json())
       .then(events => dispatch({type: SEARCH_EVENTS_COMPLETE, payload: events}))
   }
@@ -39,15 +49,25 @@ export function fetchEvent(id){
   var url1 = new URL(`${ROOT_URL}/events/${id}`);
   return(dispatch) => {
     dispatch({ type: FETCH_EVENT });
-    return fetch(url1)
+    return fetch(url1,{
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
       .then(response => response.json())
       .then(events => dispatch({type: FETCH_EVENT_COMPLETE, payload: events}))
   }
 }
 
 export function createEvent(values, callback){
-  //const response = {key: 'test'}
-  const response = axios.post(`${ROOT_URL}/events`, values)
+  const response = fetch(`${ROOT_URL}/events`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    },
+    body: JSON.stringify(values)
+  })
     .then(()=>callback());
   return{
     type: CREATE_EVENT,
@@ -56,7 +76,13 @@ export function createEvent(values, callback){
 }
 
 export function updateEvent(id, values, callback){
-  const response = axios.patch(`${ROOT_URL}/events/${id}`, values)
+  const response = fetch(`${ROOT_URL}/events/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    },
+    body: JSON.stringify(values)
+  })
   .then(()=>callback());;
   return{
     type: UPDATE_EVENT,
@@ -65,7 +91,12 @@ export function updateEvent(id, values, callback){
 }
 
 export function deleteEvent(id, callback){
-  const response = axios.delete(`${ROOT_URL}/events/${id}`)
+  const response = fetch(`${ROOT_URL}/events/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    }
+  })
     .then(()=>callback());
   return {
     type: DELETE_EVENT,
