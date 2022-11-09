@@ -29,7 +29,7 @@
     "react-dropzone": "^7.0.1",
     "react-redux": "5.0.7",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "^2.1.1",
+    "react-scripts": "^5.0.1",
     "react-slick": "^0.23.2",
     "react-webcam": "^1.0.4",
     "redux": "4.0.0",
